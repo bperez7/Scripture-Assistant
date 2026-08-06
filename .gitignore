@@ -1,0 +1,4 @@
+# Python virtual environments
+backend/scripture_env/
+venv/
+.env/
