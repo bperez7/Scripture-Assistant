@@ -2,6 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import distinct
 from sqlalchemy.orm import Session
+from typing import Optional
 
 from app.db import Base, engine, get_db
 from app.models import ScriptureVerse
@@ -43,7 +44,7 @@ def get_volumes(db: Session = Depends(get_db)):
 
 @app.get("/scriptures/books")
 def get_books(
-    volume: str | None = None,
+    volume: Optional[str] = None,
     db: Session = Depends(get_db),
 ):
     query = db.query(

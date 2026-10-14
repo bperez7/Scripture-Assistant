@@ -2,3 +2,4 @@
 backend/scripture_env/
 venv/
 .env/
+backend/.env
