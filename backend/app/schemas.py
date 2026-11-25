@@ -33,6 +33,7 @@ class AskRequest(BaseModel):
 class Citation(BaseModel):
     reference: str
     text: str
+    url: Optional[str] = None
 
 
 class WebSource(BaseModel):

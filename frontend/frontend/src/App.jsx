@@ -99,7 +99,20 @@ function App() {
           <h3>Web sources used to find passages</h3>
           <ul>{answer.web_sources.map(source => <li key={source.url}><a href={source.url} target="_blank" rel="noreferrer">{source.title || source.url}</a></li>)}</ul>
         </section>}
-        {answer && <div className="answer-wrap"><article className="answer-card"><div className="answer-heading"><span><Icon name="sparkle" size={18}/></span><h2>Study answer</h2></div><p>{answer.answer}</p></article>{answer.citations?.length > 0 && <section className="citations"><h3>Scriptures referenced</h3><div className="citation-grid">{answer.citations.map((citation, index) => <article key={`${citation.reference}-${index}`}><strong>{citation.reference}</strong><p>{citation.text}</p></article>)}</div></section>}</div>}
+        {answer && <div className="answer-wrap">
+          <article className="answer-card"><div className="answer-heading"><span><Icon name="sparkle" size={18}/></span><h2>Study answer</h2></div><p>{answer.answer}</p></article>
+          {answer.citations?.length > 0 && <section className="citations">
+            <h3>Scriptures referenced</h3>
+            <div className="citation-grid">
+              {answer.citations.map((citation, index) => <article key={`${citation.reference}-${index}`}>
+                <strong>{citation.url
+                  ? <a href={citation.url} target="_blank" rel="noreferrer">{citation.reference}</a>
+                  : citation.reference}</strong>
+                <p>{citation.text}</p>
+              </article>)}
+            </div>
+          </section>}
+        </div>}
       </section>}
       {view === 'search' && <section className="content-view">
         <div className="section-heading"><span className="section-icon"><Icon name="search" size={23}/></span><div><h1>Search the scriptures</h1><p>Find verses containing a word or phrase.</p></div></div>

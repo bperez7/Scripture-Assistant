@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 
 from app.models import ScriptureVerse
 from app.schemas import ChapterContext
+from app.scripture_links import scripture_url
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -151,6 +152,7 @@ Answer with:
             {
                 "reference": v.reference,
                 "text": v.text,
+                "url": scripture_url(v.volume, v.book, v.chapter, v.verse),
             }
             for v in verses
         ],
