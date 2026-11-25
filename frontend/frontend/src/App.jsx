@@ -58,7 +58,10 @@ function App() {
     event.preventDefault()
     if (!question.trim() || askLoading) return
     setAskLoading(true); setError(''); setAnswer(null)
-    try { setAnswer(await askQuestion(question.trim())) }
+    const chapterContext = selection.book && selection.chapter
+      ? { ...selection, chapter: Number(selection.chapter) }
+      : undefined
+    try { setAnswer(await askQuestion(question.trim(), chapterContext)) }
     catch { setError('The study assistant could not answer right now. Check that the API and OpenAI key are available.') }
     finally { setAskLoading(false) }
   }
@@ -92,6 +95,10 @@ function App() {
           <div className="ask-actions"><span>Answers include scripture references</span><button className="primary-button" disabled={!question.trim() || askLoading}>{askLoading ? <span className="spinner"/> : <Icon name="sparkle" size={17}/>} {askLoading ? 'Studying…' : 'Ask question'}</button></div>
         </form>
         {!answer && !askLoading && <div className="suggestions"><span>Try asking</span><div>{['How can faith help during trials?', 'What do the scriptures teach about prayer?', 'How can I find more peace?'].map(item => <button key={item} onClick={() => setQuestion(item)}>{item}<Icon name="arrow" size={16}/></button>)}</div></div>}
+        {answer?.web_sources?.length > 0 && <section className="citations">
+          <h3>Web sources used to find passages</h3>
+          <ul>{answer.web_sources.map(source => <li key={source.url}><a href={source.url} target="_blank" rel="noreferrer">{source.title || source.url}</a></li>)}</ul>
+        </section>}
         {answer && <div className="answer-wrap"><article className="answer-card"><div className="answer-heading"><span><Icon name="sparkle" size={18}/></span><h2>Study answer</h2></div><p>{answer.answer}</p></article>{answer.citations?.length > 0 && <section className="citations"><h3>Scriptures referenced</h3><div className="citation-grid">{answer.citations.map((citation, index) => <article key={`${citation.reference}-${index}`}><strong>{citation.reference}</strong><p>{citation.text}</p></article>)}</div></section>}</div>}
       </section>}
       {view === 'search' && <section className="content-view">

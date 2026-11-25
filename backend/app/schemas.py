@@ -1,5 +1,5 @@
-from pydantic import BaseModel, ConfigDict
-from typing import List
+from pydantic import BaseModel, ConfigDict, Field
+from typing import List, Optional
 
 
 class ScriptureVerseResponse(BaseModel):
@@ -19,8 +19,15 @@ class BookResponse(BaseModel):
     volume: str
 
 
+class ChapterContext(BaseModel):
+    volume: str
+    book: str
+    chapter: int
+
+
 class AskRequest(BaseModel):
     question: str
+    chapter_context: Optional[ChapterContext] = None
 
 
 class Citation(BaseModel):
@@ -28,6 +35,12 @@ class Citation(BaseModel):
     text: str
 
 
+class WebSource(BaseModel):
+    title: str
+    url: str
+
+
 class AskResponse(BaseModel):
     answer: str
     citations: List[Citation]
+    web_sources: List[WebSource] = Field(default_factory=list)

@@ -14,4 +14,8 @@ export const getBooks = volume => request(`/scriptures/books?volume=${encodeURIC
 export const getChapters = book => request(`/scriptures/books/${encodeURIComponent(book)}/chapters`)
 export const getChapter = (book, chapter) => request(`/scriptures/books/${encodeURIComponent(book)}/chapters/${chapter}`)
 export const searchScriptures = query => request(`/scriptures/search?q=${encodeURIComponent(query)}`)
-export const askQuestion = question => request('/ask', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question }) })
+export const askQuestion = (question, chapterContext) => request('/ask', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ question, chapter_context: chapterContext }),
+})

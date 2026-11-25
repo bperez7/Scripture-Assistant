@@ -136,4 +136,4 @@ def ask_question(
     request: AskRequest,
     db: Session = Depends(get_db),
 ):
-    return answer_question(request.question, db)
+    return answer_question(request.question, db, request.chapter_context)
